@@ -2,8 +2,9 @@ requirejs.config({
 
     paths: {
 
-        'threejs': 'vendor/threejs/build/three',
-        'socket.io': 'vendor/socket.io-client/socket.io'
+        'cannon': 'vendor/cannon.js/build/cannon',
+        'socket.io': 'vendor/socket.io-client/socket.io',
+        'threejs': 'vendor/threejs/build/three'
 
     },
 
@@ -11,6 +12,10 @@ requirejs.config({
 
         'threejs': {
             exports: 'THREE'
+        },
+
+        'cannon': {
+            exports: 'CANNON'
         }
 
     }

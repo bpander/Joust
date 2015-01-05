@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Joust</title>
+    <style>
+        /* TODO: Eventualy we'll need a real reset/css setup since presumably the UI will still need to be DOM-based */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script src="assets/scripts/vendor/requirejs/require.js"></script>
+    <script src="assets/scripts/config.js"></script>
+    <script>
+        require.config({
+            baseUrl: 'assets/scripts'
+        });
+
+        require(['main']);
+    </script>
+
+</body>
+</html>

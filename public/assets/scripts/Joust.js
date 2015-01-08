@@ -35,8 +35,8 @@ define(function (require) {
         document.body.appendChild(this.renderer.domElement);
 
         // TODO: This block needs to be organized
-        this.camera.position.z = 10;
-        this.camera.position.y = 1;
+        this.camera.position.z = 30;
+        this.camera.position.y = 10;
         this.world.gravity.set(0, -9.82, 0);
         this.world.add(this.platform.body);
         this.scene.add(this.platform.mesh);
@@ -45,13 +45,31 @@ define(function (require) {
         this.box.body.position.y = 3;
         this.box.body.position.x = 0;
 
+        var platform1 = new Platform();
+        platform1.mesh.position.y = platform1.body.position.y = 10;
+        platform1.mesh.position.x = platform1.body.position.x = 10;
+        this.world.add(platform1.body);
+        this.scene.add(platform1.mesh);
+
         this.box.body.fixedRotation = true;
         this.box.body.updateMassProperties();
-        document.body.addEventListener('touchstart', function (e) {
-            var percentAcross = e.touches[0].pageX / window.innerWidth;
-            var max = 200;
-            joust.box.body.applyForce(new CANNON.Vec3((percentAcross * max) - (max / 2), 200, 0), new CANNON.Vec3(joust.box.body.position.x, joust.box.body.position.y, joust.box.body.position.z));
-        });
+
+        var handleClickOrTouchStart = function (e) {
+            var x = e instanceof MouseEvent ? e.pageX : e.touches[0].pageX;
+            var max = 100;
+            var vector = self.box.mesh.position.clone();
+            var widthHalf = window.innerWidth / 2;
+            var heightHalf = window.innerHeight / 2;
+            vector.project(self.camera);
+            vector.x = ( vector.x * widthHalf ) + widthHalf;
+            vector.y = - ( vector.y * heightHalf ) + heightHalf;
+            var fx = Math.min(x - vector.x, max) / 2;
+
+            self.box.body.applyForce(new CANNON.Vec3(fx, 100, 0), new CANNON.Vec3(self.box.body.position.x, self.box.body.position.y, self.box.body.position.z));
+        };
+
+        document.body.addEventListener('click', handleClickOrTouchStart);
+        document.body.addEventListener('touchstart', handleClickOrTouchStart);
 
         this.updateAspectRatio();
         this.enable();
@@ -81,8 +99,6 @@ define(function (require) {
 
 
         // TODO: This needs to go in its own method
-        this.platform.mesh.position.copy(this.platform.body.position);
-        this.platform.mesh.quaternion.copy(this.platform.body.quaternion);
         this.box.mesh.position.copy(this.box.body.position);
         this.box.mesh.quaternion.copy(this.box.body.quaternion);
 

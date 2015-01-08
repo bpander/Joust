@@ -9,13 +9,13 @@ define(function (require) {
 
         this.body = new CANNON.Body({ mass: 1 });
 
-        this.geometry = new THREE.BoxGeometry(2, 2, 2);
+        this.geometry = new THREE.BoxGeometry(1, 1, 1);
 
         this.material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-        this.shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
+        this.shape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5));
 
         this.init();
     }

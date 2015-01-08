@@ -31,6 +31,7 @@ define(function (require) {
 
 
     Joust.prototype.init = function () {
+        var self = this;
         document.body.appendChild(this.renderer.domElement);
 
         // TODO: This block needs to be organized
@@ -41,8 +42,16 @@ define(function (require) {
         this.scene.add(this.platform.mesh);
         this.world.add(this.box.body);
         this.scene.add(this.box.mesh);
-        this.box.body.position.y = this.box.mesh.position.y = 5; // TODO: Need to figure out how to keep mesh and body synched
-        this.box.body.position.x = this.box.mesh.position.x = 1;
+        this.box.body.position.y = 3;
+        this.box.body.position.x = 0;
+
+        this.box.body.fixedRotation = true;
+        this.box.body.updateMassProperties();
+        document.body.addEventListener('touchstart', function (e) {
+            var percentAcross = e.touches[0].pageX / window.innerWidth;
+            var max = 200;
+            joust.box.body.applyForce(new CANNON.Vec3((percentAcross * max) - (max / 2), 200, 0), new CANNON.Vec3(joust.box.body.position.x, joust.box.body.position.y, joust.box.body.position.z));
+        });
 
         this.updateAspectRatio();
         this.enable();

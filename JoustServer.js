@@ -1,4 +1,5 @@
 var socketIO = require('socket.io');
+var CANNON = require('cannon');
 
 function JoustServer (server) {
 
